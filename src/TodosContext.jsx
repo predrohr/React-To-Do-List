@@ -14,6 +14,8 @@ export function TodosProvider({children}) {
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
+  const [filterBy, setFilterBy] = useState("");
+
   return (
     <>
       <main>  
@@ -23,7 +25,9 @@ export function TodosProvider({children}) {
             todos, 
             dispatch,
             modalIsActive, 
-            setModalIsActive
+            setModalIsActive,
+            filterBy,
+            setFilterBy,
             }
             }>
          {children}
@@ -47,7 +51,9 @@ export function useTodos(){
         }
 
         case "added": {
-            return [...todos, action.newTodo];
+            let newTodo = action.newTodo;
+            newTodo.id = todos.length ? Math.max(...todos.map(todo => todo.id)) + 1 : 1;
+            return [...todos, newTodo];
         }
 
         case "toggleIsDone": {
