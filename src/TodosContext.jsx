@@ -1,11 +1,9 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useReducer, useState, useEffect } from "react";
 export const TodosContext = createContext("");
 
-const initialTodos = [
-  { id: 0, title: 'Do Groceries', description: 'Buy apples, rice, juice and toilet paper.', isDone: true },
-  { id: 1, title: 'Study React', description: 'Understand context & reducers.', isDone: false},
-  { id: 2, title: 'Learn Redux', description: 'Learn state management with Redux', isDone: false }
-];
+const initialTodos = localStorage.getItem('todos') ? 
+JSON.parse(localStorage.getItem('todos')) 
+: [];
 
 
 export function TodosProvider({children}) {
@@ -29,6 +27,10 @@ export function TodosProvider({children}) {
       }
     }
   }
+
+    useEffect(() => {
+      localStorage.setItem('todos', JSON.stringify(todos))
+      }, [todos]);
 
   return (
     <>
@@ -61,8 +63,10 @@ export function useTodos(){
     switch (action.type){
         case "deleted": {
             if(confirm('Are you sure to delete To-do?')){
-            return todos.filter(todo => todo.id !== action.id);
-    }
+             return todos.filter(todo => todo.id !== action.id);
+         }   else {
+              return todos;
+         }
         }
 
         case "added": {

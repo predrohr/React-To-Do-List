@@ -9,7 +9,7 @@ function TodosList() {
   return (
     <>
         <div className="todos">
-          {store.filteredTodos().lenght ? store.filteredTodos().map(todo => 
+          {store.filteredTodos().length ? store.filteredTodos().map(todo => 
             <Todo
               todo={todo}
               key={todo.id}
